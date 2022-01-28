@@ -1,4 +1,6 @@
 package com.security.securityjwt.serviceImp;
 
-public class UserServiceImp {
+import com.security.securityjwt.service.UserService;
+
+public class UserServiceImp implements UserService {
 }
