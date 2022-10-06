@@ -1,6 +1,7 @@
 package com.security.securityjwt.controller;
 
 import com.security.securityjwt.domain.AuthRequest;
+import com.security.securityjwt.exception.ApiRequestException;
 import com.security.securityjwt.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,15 +30,15 @@ public class AuthController {
         return "Welcome!";
     }
 
-    @PostMapping("/authenticate")
-    public @ResponseBody String generateToken(AuthRequest authRequest) throws Exception{
+    @PostMapping("/login")
+    public @ResponseBody String generateToken(AuthRequest authRequest) throws ApiRequestException{
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             authRequest.getUsername(), authRequest.getPass())
             );
         }catch (Exception e){
-            throw new Exception("Invalid username and password",e.getCause());
+            throw new ApiRequestException("Invalid username and password", HttpStatus.BAD_REQUEST);
         }
         return jwtUtil.generateToken(authRequest.getUsername()) ;
 
