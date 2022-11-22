@@ -5,8 +5,7 @@ import com.security.securityjwt.domain.User;
 import com.security.securityjwt.repository.RolRepository;
 import com.security.securityjwt.repository.UserRepository;
 import com.security.securityjwt.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,17 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class UserServiceImp implements UserDetailsService, UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RolRepository rolRepository;
-
-    @Autowired
-    BCryptPasswordEncoder encoder;
+    private final UserRepository userRepository;
+    private final RolRepository rolRepository;
+    private final BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

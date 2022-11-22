@@ -7,35 +7,28 @@ import com.security.securityjwt.domain.User;
 import com.security.securityjwt.exception.ApiRequestException;
 import com.security.securityjwt.service.UserService;
 import com.security.securityjwt.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.SpringVersion;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/")
     public String welcome(){
@@ -66,6 +59,7 @@ public class AuthController {
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<UserDTO>> findAll(){
+        System.out.println(SpringVersion.getVersion());
         List<User> usuarios = userService.findAll();
         return new ResponseEntity<>(usuarios.stream().map(users -> modelMapper.map(users, UserDTO.class))
                 .collect(Collectors.toList()), HttpStatus.OK) ;
